@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Health Tracker</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      font-family: 'Poppins', sans-serif;
+      box-sizing: border-box;
+    }
+
+    body {
+      background-color: #f0f4f8;
+    }
+
+    body.no-scroll {
+      overflow: hidden;
+      height: 100vh;
+    }
+
+    nav {
+      display: flex;
+      justify-content: space-between;
+      padding: 15px 30px;
+      background-color: #003366;
+      color: white;
+      align-items: center;
+    }
+
+    nav h1 {
+      font-size: 22px;
+    }
+
+    nav ul {
+      display: flex;
+      list-style: none;
+    }
+
+    nav ul li {
+      margin-left: 20px;
+      cursor: pointer;
+    }
+
+    nav ul li:hover {
+      text-decoration: underline;
+    }
+
+    section {
+      display: none;
+      padding: 40px 20px;
+    }
+
+    #homePage {
+      display: block;
+      background: url('background.jpg') no-repeat center center/cover;
+      height: 100vh;
+      position: relative;
+    }
+
+    #homeContent {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-color: rgba(0, 0, 0, 0.4);
+      padding: 30px;
+      border-radius: 10px;
+      color: white;
+      text-align: center;
+      width: 80%;
+      max-width: 500px;
+    }
+
+    #homeContent h1 {
+      font-size: 30px;
+      margin-bottom: 10px;
+    }
+
+    #homeContent p {
+      margin-bottom: 20px;
+    }
+
+    #homeContent button {
+      padding: 10px 20px;
+      border: none;
+      background-color: #00c9a7;
+      color: white;
+      font-weight: bold;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    #signinPage {
+      background: url("signin.jpg") no-repeat center center/cover;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 0;
+    }
+
+    #signinPage .centered {
+      max-width: 400px;
+      background: rgba(255, 255, 255, 0.9);
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.2);
+    }
+
+    .form-group {
+      margin-bottom: 15px;
+    }
+
+    input[type="text"], input[type="password"], input[type="time"], input[type="email"] {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 14px;
+    }
+
+    button {
+      padding: 10px 20px;
+      border: none;
+      background-color: #4caf50;
+      color: white;
+      border-radius: 5px;
+      cursor: pointer;
+      width: 100%;
+    }
+
+    .reminder-item {
+      background: #fff;
+      padding: 10px;
+      margin-bottom: 10px;
+      border-radius: 5px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .delete-btn {
+      background-color: #f44336;
+      color: white;
+      border: none;
+      padding: 5px 10px;
+      border-radius: 3px;
+      cursor: pointer;
+    }
+
+    .link-btn {
+      background: none;
+      border: none;
+      color: #003366;
+      cursor: pointer;
+      text-decoration: underline;
+    }
+
+    .time {
+      font-weight: bold;
+      text-align: center;
+      margin: 10px 0;
+    }
+
+    #signupPage {
+      background-image: url("signup.jpg");
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 0;
+    }
+
+    .signup-container {
+      background-color: rgba(255, 255, 255, 0.9);
+      padding: 40px;
+      border-radius: 15px;
+      width: 350px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    }
+
+    .signup-container h2 {
+      text-align: center;
+      margin-bottom: 20px;
+      color: #003366;
+    }
+
+    .signup-container .form-group input {
+      background-color: #f5f5f5;
+    }
+
+    .signup-container button {
+      background-color: #00bfa6;
+    }
+
+    .signup-container button:hover {
+      background-color: #009e8c;
+    }
+
+    .signup-container p {
+      text-align: center;
+      margin-top: 15px;
+    }
+
+    .signup-container a {
+      color: #003366;
+      text-decoration: none;
+    }
+
+    .signup-container a:hover {
+      text-decoration: underline;
+    }
+
+    #dashboardPage {
+      display: none;
+      padding: 40px 20px;
+      background: url('dashboard-bg.jpg') no-repeat center center;
+      background-size: cover;
+      min-height: 100vh;
+    }
+
+    .dashboard-container {
+      max-width: 600px;
+      margin: auto;
+      background: rgba(255, 255, 255, 0.9);
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+
+  </style>
+</head>
+<body class="no-scroll">
+
+  <nav>
+    <h1>Health Tracker</h1>
+    <ul>
+      <li onclick="showPage('homePage')">Home</li>
+      <li onclick="showPage('signinPage')">Sign In</li>
+      <li onclick="showPage('signupPage')">Sign Up</li>
+    </ul>
+  </nav>
+
+  <section id="homePage">
+    <div id="homeContent">
+      <h1>Take Control of Your Health</h1>
+      <p>Organize your health activities and stay informed every day.</p>
+      <button onclick="showPage('signupPage')">Get Started</button>
+    </div>
+  </section>
+
+  <section id="signinPage">
+    <div class="centered">
+      <h2 style="text-align:center;">Sign In</h2>
+      <div class="form-group">
+        <label>Username</label>
+        <input type="text" id="signinUsername">
+      </div>
+      <div class="form-group">
+        <label>Password</label>
+        <input type="password" id="signinPassword">
+      </div>
+      <button onclick="signin()">Sign In</button>
+      <p style="text-align:center;">Don't have an account?
+        <button class="link-btn" onclick="showPage('signupPage')">Sign Up</button>
+      </p>
+    </div>
+  </section>
+
+  <section id="signupPage">
+    <div class="signup-container">
+      <h2>Sign Up</h2>
+      <div class="form-group">
+        <label>Username</label>
+        <input type="text" id="signupUsername">
+      </div>
+      <div class="form-group">
+        <label>Email</label>
+        <input type="email" id="signupEmail">
+      </div>
+      <div class="form-group">
+        <label>Password</label>
+        <input type="password" id="signupPassword">
+      </div>
+      <div class="form-group">
+        <label>Confirm Password</label>
+        <input type="password" id="signupConfirmPassword">
+      </div>
+      <button onclick="signup()">Create Account</button>
+      <p>Already have an account?
+        <button class="link-btn" onclick="showPage('signinPage')">Sign In</button>
+      </p>
+    </div>
+  </section>
+
+  <section id="dashboardPage">
+    <div class="dashboard-container">
+      <h2 style="text-align:center;">Medicine Reminder</h2>
+      <div class="time" id="currentTime">--:--:--</div>
+      <div class="form-group">
+        <label>Medicine Name</label>
+        <input type="text" id="medicineName">
+      </div>
+      <div class="form-group">
+        <label>Reminder Time</label>
+        <input type="time" id="reminderTime">
+      </div>
+      <button onclick="addReminder()">Add Reminder</button>
+      <button style="background-color:#f44336; margin-top:10px;" onclick="logout()">Logout</button>
+      <ul id="reminders" style="list-style:none; padding:0; margin-top:20px;"></ul>
+    </div>
+  </section>
+
+  <script>
+    function showPage(id) {
+      document.querySelectorAll('section').forEach(s => s.style.display = 'none');
+      const el = document.getElementById(id);
+      el.style.display = id === 'signupPage' || id === 'signinPage' ? 'flex' : 'block';
+
+      if (id === 'homePage') {
+        document.body.classList.add('no-scroll');
+      } else {
+        document.body.classList.remove('no-scroll');
+      }
+    }
+
+    function signup() {
+      const user = document.getElementById('signupUsername').value.trim();
+      const email = document.getElementById('signupEmail').value.trim();
+      const pass = document.getElementById('signupPassword').value;
+      const confirm = document.getElementById('signupConfirmPassword').value;
+
+      if (!user || !email || !pass || !confirm) {
+        return alert("Please fill in all fields.");
+      }
+
+      if (pass !== confirm) {
+        return alert("Passwords do not match.");
+      }
+
+      localStorage.setItem('user', JSON.stringify({ user, email, pass }));
+      alert('Sign up successful!');
+      showPage('signinPage');
+    }
+
+    function signin() {
+      const user = document.getElementById('signinUsername').value;
+      const pass = document.getElementById('signinPassword').value;
+      const saved = JSON.parse(localStorage.getItem('user'));
+      if (saved && saved.user === user && saved.pass === pass) {
+        showPage('dashboardPage');
+      } else {
+        alert("Invalid credentials.");
+      }
+    }
+
+    function logout() {
+      alert("Logged out.");
+      showPage('homePage');
+    }
+
+    function addReminder() {
+      const name = document.getElementById('medicineName').value;
+      const time = document.getElementById('reminderTime').value;
+      if (!name || !time) return alert("Enter both fields.");
+      const li = document.createElement('li');
+      li.className = 'reminder-item';
+      li.innerHTML = `${name} - ${time} <button class="delete-btn" onclick="this.parentElement.remove()">Delete</button>`;
+      document.getElementById('reminders').appendChild(li);
+
+      const now = new Date();
+      const [h, m] = time.split(":");
+      const reminderTime = new Date();
+      reminderTime.setHours(h, m, 0, 0);
+      const delay = reminderTime - now;
+      if (delay > 0) {
+        setTimeout(() => {
+          alert(`⏰ Time to take your medicine: ${name}`);
+        }, delay);
+      }
+
+      document.getElementById('medicineName').value = '';
+      document.getElementById('reminderTime').value = '';
+    }
+
+    function updateClock() {
+      const now = new Date();
+      const h = String(now.getHours()).padStart(2, '0');
+      const m = String(now.getMinutes()).padStart(2, '0');
+      const s = String(now.getSeconds()).padStart(2, '0');
+      document.getElementById('currentTime').textContent = `${h}:${m}:${s}`;
+    }
+
+    setInterval(updateClock, 1000);
+    updateClock();
+  </script>
+</body>
+</html>
